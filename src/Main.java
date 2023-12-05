@@ -13,5 +13,5 @@ public class Main {
 		System.out.println("==프로그램 ==");
 		
 		sc.close();
-	}///////
+	}//////
 }
