@@ -14,75 +14,85 @@ public class Main {
 
 		while (true) {
 			System.out.printf("명령어)");
-			String cmd = sc.nextLine().trim();// 사용자가 입력한 명령어를 받아오고 앞뒤 공백을 제거한 뒤 cmd변수에 저
+			String cmd = sc.nextLine().trim();
 
-			if (cmd.length() == 0) {// 입력받은 명령어 길이가 0이라면(아무것도 입력하지 않은 상태)
-				System.out.println("명령어를 입력해주세요");// 명령어를 입력해주세요를 출력하고 다시 입력을 받을 준비
+			if (cmd.length() == 0) {
+				System.out.println("명령어를 입력해주세요");
 				continue;
 			}
 			if (cmd.equals("exit")) {
 				break;
 			}
-			if (cmd.equals("article write")) {// article write를 입력하면 게시물을 작성할 수 있는데
+			if (cmd.equals("article write")) {
 
 				lastArticleId++;
 				System.out.println("제목 : ");
 				String title = sc.nextLine();
 				System.out.println("내용 : ");
 				String body = sc.nextLine();
-				// lastArticleId를 증가시키고 마지막으로 생성된 게시물 번호를 출력
 
 				Article article = new Article(lastArticleId, title, body);
-				// 사용자로부터 제목 내용을 입력 받아 새로운 Article 객체를 생성 articles 리스트에 추가
-				//
+
 				articles.add(article);
 
-				System.out.println(lastArticleId + "번 게시물이 생성되었습니다");// 각 게시물 고유한 ID 부
-			} else if (cmd.equals("article list")) {// 저장된 게시물 목록을 확인
+				System.out.println(lastArticleId + "번 게시물이 생성되었습니다");
+			} else if (cmd.equals("article list")) {
 				if (articles.size() == 0) {
-					System.out.println("게시물이 존재하지 않습니다");// 게시물이 없는 경우 "게시물이 존재하지 않습니다" 라는 메시지를 출력
+					System.out.println("게시물이 존재하지 않습니다");
 					continue;
 				}
 				System.out.println("번호		/	제목");
-				for (int i = articles.size() - 1; i >= 0; i--) {// 리스트에 저장된 게시물을 역순으로 출력하여 번호와 제목을 표시
+				for (int i = articles.size() - 1; i >= 0; i--) {
 					Article article = articles.get(i);
 					System.out.printf("%d		/	%s\n", article.id, article.title);
 
 				}
 
-			} else if (cmd.equals("article list")) {// 저장된 게시물 목록을 확인
-				if (articles.size() == 0) {
-					System.out.println("게시물이 존재하지 않습니다");// 게시물이 없는 경우 "게시물이 존재하지 않습니다" 라는 메시지를 출력
+			} else if (cmd.startsWith("article list")) {
+				String[] cmdBits = cmd.split("  ");
+				int id = Integer.parseInt(cmdBits[2]);
+
+				Article foundArticle = null;
+
+				for (Article article : articles) {
+					if (article.id == id) {
+						foundArticle = article;
+						break;
+					}
+				}
+
+				if (foundArticle == null) {
+					System.out.printf("%d번 게시물은 존재하지 않습니다\n", id);
 					continue;
 				}
-				System.out.println("번호		/	제목");
-				for (int i = articles.size() - 1; i >= 0; i--) {// 리스트에 저장된 게시물을 역순으로 출력하여 번호와 제목을 표시
-					Article article = articles.get(i);
-					System.out.printf("%d		/	%s\n", article.id, article.title);
 
-				}
+				System.out.printf("번호  :  %d\n", foundArticle.id);
+				System.out.printf("제목  :  %s\n", foundArticle.title);
+				System.out.printf("내용  :  %s\n", foundArticle.body);
 
 			} else {
-
-				System.out.println("존재하지 않는 명령어 입니다");// 다른 명령어를 입력했을 때는
+				System.out.println("존재하지 않는 명령어 입니다");
 			}
 		}
 
 		System.out.println("==프로그램 종료==");
 
-		sc.close();// Scanner를 닫아 리소스를 해제하고 있다
+		sc.close();
 	}
 }
+//명령어 분기 타는 else if
+//article detail 이런 명령이 들어왔을 때 starsWith() 사용해서 올바르게 인지할 수 있게끔
+//명령어에 입력된 글 번호 부분을 split() 활용해서 변수에 저장
+//articles 안에 내가 보고자 하는 글의 번호화 일치하는 게시물이 있는지 찾아봐야한다(순회해서 찾는다)
+//찾아봤는데 없으면 메시지
+//찾음 다음에 있으면 보여줌
 
-// 현재 article write 라는 명령어를 통해 생성된 게시물들을 실제로 저장할 수 있게 처리하고 
-//article list라는 명령어를 통해 저장되어 있는 게시물들의 목록을 볼 수 있게 
-//게시물을 저장해둔다 
-class Article {// 게시물 클래스
+class Article {
 	int id;
 	String title;
 	String body;
 
-	Article(int id, String title, String body) {// 생성자를 통해 게시물의 정보를 초기화할 수 있
+	Article(int id, String title, String body) {
 		this.id = id;
 		this.title = title;
 		this.body = body;
