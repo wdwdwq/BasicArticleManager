@@ -49,20 +49,20 @@ public class Main {
 				}
 
 			} else if (cmd.startsWith("article detail")) {
-				String[] cmdBits = cmd.split("  ");
-				int id = Integer.parseInt(cmdBits[2]);
+				String[] cmdBits = cmd.split(" ");//입력된 명령어 공백 단위로 나누어 배열에 저장 공백을 기준으로 나
+				int id = Integer.parseInt(cmdBits[2]);//보고자 하는 게시물의 번호가 들어가게 되는데 it타입으로 파싱하여 저
 
 				Article foundArticle = null;
 
-				for (Article article : articles) {
-					if (article.id == id) {
+				for (Article article : articles) {//for 루프 사용 articles리스트 순회해 입력받은 번호화 일치하는 게시물을 찾
+					if (article.id == id) {//일치하는 게시물이 있으면 해당 내용 출력 
 						foundArticle = article;
 						break;
 					}
 				}
 
 				if (foundArticle == null) {
-					System.out.printf("%d번 게시물은 존재하지 않습니다\n", id);
+					System.out.printf("%d번 게시물은 존재하지 않습니다\n", id);//없으면 게시물이 존재하지 않습니다 메시지 출력
 					continue;
 				}
 
