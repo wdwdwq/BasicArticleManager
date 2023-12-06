@@ -48,7 +48,7 @@ public class Main {
 
 				}
 
-			} else if (cmd.startsWith("article list")) {
+			} else if (cmd.startsWith("article detail")) {
 				String[] cmdBits = cmd.split("  ");
 				int id = Integer.parseInt(cmdBits[2]);
 
