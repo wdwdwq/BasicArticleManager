@@ -1,18 +1,23 @@
+package example;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class Main {
+import example.dto.Article;
+import example.util.Util;
 
-	static List<Article> articles;
-	static int lastArticleId;
+public class App {
 
-	static {
-		articles = new ArrayList<>();
-		lastArticleId = 0;
+	private List<Article> articles;
+	private int lastArticleId;
+
+	public App() {
+		this.articles = new ArrayList<>();
+		this.lastArticleId = 0;
 	}
 
-	public static void main(String[] args) {
+	void run() {
 
 		System.out.println("== 프로그램 시작 ==");
 
@@ -44,19 +49,19 @@ public class Main {
 
 				Article article = new Article(lastArticleId, Util.getDateStr(), title, body);
 
-				articles.add(article);
+				this.articles.add(article);
 
 				System.out.println(lastArticleId + "번 게시물이 생성되었습니다");
 			} else if (cmd.equals("article list")) {
 
-				if (articles.size() == 0) {
+				if (this.articles.size() == 0) {
 					System.out.println("게시물이 존재하지 않습니다");
 					continue;
 				}
 
 				System.out.println("번호	/	제목	/		작성일");
-				for (int i = articles.size() - 1; i >= 0; i--) {
-					Article article = articles.get(i);
+				for (int i = this.articles.size() - 1; i >= 0; i--) {
+					Article article = this.articles.get(i);
 					System.out.printf("%d	/	%s	/	%s\n", article.id, article.title, article.regDate);
 				}
 
@@ -64,14 +69,7 @@ public class Main {
 				String[] cmdBits = cmd.split(" ");
 				int id = Integer.parseInt(cmdBits[2]);
 
-				Article foundArticle = null;
-
-				for (Article article : articles) {
-					if (article.id == id) {
-						foundArticle = article;
-						break;
-					}
-				}
+				Article foundArticle = getArticleById(id);
 
 				if (foundArticle == null) {
 					System.out.printf("%d번 게시물은 존재하지 않습니다\n", id);
@@ -87,14 +85,7 @@ public class Main {
 				String[] cmdBits = cmd.split(" ");
 				int id = Integer.parseInt(cmdBits[2]);
 
-				Article foundArticle = null;
-
-				for (Article article : articles) {
-					if (article.id == id) {
-						foundArticle = article;
-						break;
-					}
-				}
+				Article foundArticle = getArticleById(id);
 
 				if (foundArticle == null) {
 					System.out.printf("%d번 게시물은 존재하지 않습니다\n", id);
@@ -115,21 +106,14 @@ public class Main {
 				String[] cmdBits = cmd.split(" ");
 				int id = Integer.parseInt(cmdBits[2]);
 
-				Article foundArticle = null;
-
-				for (Article article : articles) {
-					if (article.id == id) {
-						foundArticle = article;
-						break;
-					}
-				}
+				Article foundArticle = getArticleById(id);
 
 				if (foundArticle == null) {
 					System.out.printf("%d번 게시물은 존재하지 않습니다\n", id);
 					continue;
 				}
 
-				articles.remove(foundArticle);
+				this.articles.remove(foundArticle);
 				System.out.printf("%d번 게시물을 삭제했습니다\n", id);
 
 			} else {
@@ -143,24 +127,20 @@ public class Main {
 
 	}
 
-	private static void makeTestData() {
-		articles.add(new Article(++lastArticleId, Util.getDateStr(), "제목1", "내용1"));
-		articles.add(new Article(++lastArticleId, Util.getDateStr(), "제목2", "내용2"));
-		articles.add(new Article(++lastArticleId, Util.getDateStr(), "제목3", "내용3"));
-		System.out.println("테스트용 게시물이 생성되었습니다");
+	private Article getArticleById(int id) {
+		for (Article article : this.articles) {
+			if (article.id == id) {
+				return article;
+
+			}
+		}
+		return null;
 	}
-}
 
-class Article {
-	int id;
-	String regDate;
-	String title;
-	String body;
-
-	Article(int id, String regDate, String title, String body) {
-		this.id = id;
-		this.regDate = regDate;
-		this.title = title;
-		this.body = body;
+	private void makeTestData() {
+		this.articles.add(new Article(++lastArticleId, Util.getDateStr(), "제목1", "내용1"));
+		this.articles.add(new Article(++lastArticleId, Util.getDateStr(), "제목2", "내용2"));
+		this.articles.add(new Article(++lastArticleId, Util.getDateStr(), "제목3", "내용3"));
+		System.out.println("테스트용 게시물이 생성되었습니다");
 	}
 }
