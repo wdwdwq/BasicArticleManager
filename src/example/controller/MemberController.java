@@ -19,6 +19,10 @@ public class MemberController {
 		this.sc = sc;
 	}
 	
+	public void doAction(String methodName) {
+	
+	}
+	
 	public void doJoin() {
 
 		lastMemberId++;
@@ -92,4 +96,6 @@ public class MemberController {
 		System.out.printf("%s회원님이 가입되었습니다\n", name);
 		
 	}
+
+	
 }
