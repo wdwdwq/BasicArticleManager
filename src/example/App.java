@@ -4,26 +4,28 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import example.controller.MemberController;
 import example.dto.Article;
 import example.util.Util;
 
 public class App {
-
+	
 	private List<Article> articles;
 	private int lastArticleId;
-
+	
 	public App() {
-		this.articles = new ArrayList<>();
-		this.lastArticleId = 0;
+		 this.articles = new ArrayList<>();
+		 this.lastArticleId = 0;
 	}
-
-	void run() {
-
+	
+	public void run() {
 		System.out.println("== 프로그램 시작 ==");
 
 		makeTestData();
 
 		Scanner sc = new Scanner(System.in);
+		
+		MemberController memberController = new MemberController(sc);
 
 		while (true) {
 			System.out.printf("명령어) ");
@@ -37,8 +39,10 @@ public class App {
 			if (cmd.equals("exit")) {
 				break;
 			}
-
-			if (cmd.equals("article write")) {
+			
+			if (cmd.equals("member join")) {
+				memberController.doJoin();
+			} else if (cmd.equals("article write")) {
 
 				lastArticleId++;
 
@@ -146,14 +150,12 @@ public class App {
 		System.out.println("== 프로그램 끝 ==");
 
 		sc.close();
-
 	}
-
+	
 	private Article getArticleById(int id) {
 		for (Article article : this.articles) {
 			if (article.id == id) {
 				return article;
-
 			}
 		}
 		return null;
