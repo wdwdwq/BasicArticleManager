@@ -23,11 +23,23 @@ public class MemberController extends Controller {
 		switch (methodName) {
 		case "join":
 			doJoin();
+			if(isLogined()) {
+				System.out.println("로그아웃 후 이용해주세요");
+				break;
+			}
 			break;
 		case "login":
+			if(isLogined()) {
+				System.out.println("로그아웃 후 이용해주세요");
+				break;
+			}
 			doLogin();
 			break;
 		case "logout":
+			if(isLogined() == false) {
+				System.out.println("로그 후 이용해주세요");
+				break;
+			}
 			doLogout();
 			break;
 		default:
